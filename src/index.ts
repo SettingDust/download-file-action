@@ -2,8 +2,7 @@
 import * as path from 'path'
 
 import * as core from '@actions/core'
-
-import download from './download-mod'
+import {DownloaderHelper} from 'node-downloader-helper'
 
 async function main(): Promise<void> {
   try {
@@ -15,8 +14,9 @@ async function main(): Promise<void> {
         core.info('Downloading file:')
         core.info(`\turl: ${url}`)
         core.info(`\tlocation: ${path.resolve(fileLocation)}`)
-        const filePath = await download(url, fileLocation)
-        filePaths.push(filePath)
+        const download = new DownloaderHelper(url, fileLocation)
+        await download.start()
+        download.on('end', ({filePath}) => filePaths.push(filePath))
       })
     )
     core.setOutput('files', filePaths.join('\n'))
