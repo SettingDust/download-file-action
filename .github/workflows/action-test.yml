@@ -35,12 +35,12 @@ jobs:
         id: download-poetry-simple
         with:
           file-url: 'https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py'
-      - run: echo "The file was downloaded to ${{ steps.download-poetry-simple.outputs.file-path }}"
+      - run: echo "The file was downloaded to ${{ steps.download-poetry-simple.outputs.files }}"
       - name: Test file exists
         run: python -c "import os; exit(not os.path.isfile('get-poetry.py'))"
       - name: Test action output path is correct
-        run: python -c "import os; exit(not r'${{ steps.download-poetry-simple.outputs.file-path }}' == os.path.abspath('get-poetry.py'))"
-      - run: ls && rm ${{ steps.download-poetry-simple.outputs.file-path }} && ls
+        run: python -c "import os; exit(not r'${{ steps.download-poetry-simple.outputs.files }}' == os.path.abspath('get-poetry.py'))"
+      - run: ls && rm ${{ steps.download-poetry-simple.outputs.files }} && ls
 
       - name: Test to download a file with a different filename
         uses: ./
@@ -48,12 +48,12 @@ jobs:
         with:
           file-url: 'https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py'
           file-name: 'new_name.py'
-      - run: echo "The file was downloaded to ${{ steps.download-poetry-name.outputs.file-path }}"
+      - run: echo "The file was downloaded to ${{ steps.download-poetry-name.outputs.files }}"
       - name: Test file exists
         run: python -c "import os; exit(not os.path.isfile('new_name.py'))"
       - name: Test action output path is correct
-        run: python -c "import os; exit(not r'${{ steps.download-poetry-name.outputs.file-path }}' == os.path.abspath('new_name.py'))"
-      - run: ls && rm ${{ steps.download-poetry-name.outputs.file-path }} && ls
+        run: python -c "import os; exit(not r'${{ steps.download-poetry-name.outputs.files }}' == os.path.abspath('new_name.py'))"
+      - run: ls && rm ${{ steps.download-poetry-name.outputs.files }} && ls
 
       - name: Test to download a file to a different path
         uses: ./
@@ -61,11 +61,11 @@ jobs:
         with:
           file-url: 'https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py'
           location: 'new_folder'
-      - run: echo "The file was downloaded to ${{ steps.download-poetry-location.outputs.file-path }}"
+      - run: echo "The file was downloaded to ${{ steps.download-poetry-location.outputs.files }}"
       - name: Test file exists
         run: python -c "import os; exit(not os.path.isfile('new_folder/get-poetry.py'))"
       - name: Test action output path is correct
-        run: python -c "import os; exit(not r'${{ steps.download-poetry-location.outputs.file-path }}' == os.path.abspath('new_folder/get-poetry.py'))"
+        run: python -c "import os; exit(not r'${{ steps.download-poetry-location.outputs.files }}' == os.path.abspath('new_folder/get-poetry.py'))"
       - run: ls new_folder && rm -r new_folder
 
       - name: Test to download a file to a relative path
@@ -74,12 +74,12 @@ jobs:
         with:
           file-url: 'https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py'
           location: '../'
-      - run: echo "The file was downloaded to ${{ steps.download-poetry-relative.outputs.file-path }}"
+      - run: echo "The file was downloaded to ${{ steps.download-poetry-relative.outputs.files }}"
       - name: Test file exists
         run: python -c "import os; exit(not os.path.isfile('../get-poetry.py'))"
       - name: Test action output path is correct
-        run: python -c "import os; exit(not r'${{ steps.download-poetry-relative.outputs.file-path }}' == os.path.abspath('../get-poetry.py'))"
-      - run: ls ../ && rm ${{ steps.download-poetry-relative.outputs.file-path }} && ls ../
+        run: python -c "import os; exit(not r'${{ steps.download-poetry-relative.outputs.files }}' == os.path.abspath('../get-poetry.py'))"
+      - run: ls ../ && rm ${{ steps.download-poetry-relative.outputs.files }} && ls ../
 
       - name: Test to download a file to an absolute path
         uses: ./
@@ -87,11 +87,11 @@ jobs:
         with:
           file-url: 'https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py'
           location: '${{ github.workspace }}/a_folder'
-      - run: echo "The file was downloaded to ${{ steps.download-poetry-absolute.outputs.file-path }}"
+      - run: echo "The file was downloaded to ${{ steps.download-poetry-absolute.outputs.files }}"
       - name: Test file exists
         run: python -c "import os; exit(not os.path.isfile(r'${{ github.workspace }}/a_folder/get-poetry.py'))"
       - name: Test action output path is correct
-        run: python -c "import os; exit(not r'${{ steps.download-poetry-absolute.outputs.file-path }}' == os.path.abspath(r'${{ github.workspace }}/a_folder/get-poetry.py'))"
+        run: python -c "import os; exit(not r'${{ steps.download-poetry-absolute.outputs.files }}' == os.path.abspath(r'${{ github.workspace }}/a_folder/get-poetry.py'))"
       - run: ls ${{ github.workspace }}/a_folder && rm -r ${{ github.workspace }}/a_folder
 
       - name: Test to download a file to a different filename and path
@@ -101,7 +101,7 @@ jobs:
           file-url: 'https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py'
           location: 'different_folder'
           file-name: 'new_name.py'
-      - run: echo "The file was downloaded to ${{ steps.download-poetry-both.outputs.file-path }}"
+      - run: echo "The file was downloaded to ${{ steps.download-poetry-both.outputs.files }}"
       - name: Test file exists
         run: python -c "import os; exit(not os.path.isfile('different_folder/new_name.py'))"
       - run: ls different_folder && rm -r different_folder
