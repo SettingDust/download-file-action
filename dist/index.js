@@ -1285,19 +1285,20 @@ const node_downloader_helper_1 = __webpack_require__(12);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const fileURL = core.getInput('file-url', { required: true }).split('\n');
-            const fileLocation = core.getInput('location') || process.cwd();
-            const filePaths = [];
-            yield Promise.all(fileURL.map((url) => __awaiter(this, void 0, void 0, function* () {
-                core.info('Downloading file:');
+            const fileURL = core.getInput("file-url", { required: true }).split("\n");
+            const fileLocation = core.getInput("location") || process.cwd();
+            core.setOutput("files", (yield Promise.all(fileURL.map((url) => new Promise(resolve => {
+                core.info("Downloading file:");
                 core.info(`\turl: ${url}`);
                 core.info(`\tlocation: ${path.resolve(fileLocation)}`);
                 const download = new node_downloader_helper_1.DownloaderHelper(url, fileLocation);
-                yield download.start();
-                download.on('end', ({ filePath }) => filePaths.push(filePath));
-            })));
-            core.setOutput('files', filePaths.join('\n'));
-            core.info('Files successfully downloaded.');
+                download.start();
+                download.on("end", ({ filePath, fileName }) => {
+                    core.info(`File ${fileName} downloaded.`);
+                    resolve(filePath);
+                });
+            })))).join("\n"));
+            core.info("Files successfully downloaded.");
         }
         catch (error) {
             if (error instanceof Error)
